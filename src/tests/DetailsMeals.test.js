@@ -1,6 +1,5 @@
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-/* import userEvent from '@testing-library/user-event'; */
 import React from 'react';
 import App from '../App';
 /* import DrinksPage from '../pages/DrinksPage'; */
@@ -14,7 +13,6 @@ const mockFetch = (data) => Promise.resolve({
 });
 
 const flushPromises = () => new Promise((r) => { setTimeout(r); });
-const startRecipeBtnId = 'start-recipe-btn';
 
 describe('Testand details Meals', () => {
   beforeEach(() => {
@@ -25,24 +23,23 @@ describe('Testand details Meals', () => {
   });
   const mockFavorites = 'favoriteRecipes';
   const listFavorites = [{
-    id: '52977',
-    nationality: 'Turkish',
-    name: 'Corba',
-    image: 'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg',
+    id: '52844',
+    /* nationality: 'Turkish', */
+    name: 'Lasagne',
+    image: 'https://www.themealdb.com/images/media/meals/wtsvxx1511296896.jpg',
   }];
   const setLocalStorage = (id, data) => {
     window.localStorage.setItem(id, JSON.stringify(data));
   };
-  /* const startRecipeBtnId = 'start-recipe-btn'; */
   setLocalStorage(mockFavorites, listFavorites);
   test('Meals details', async () => {
     await flushPromises();
     expect(localStorage.getItem(mockFavorites)).toEqual(JSON.stringify(listFavorites));
     const { history } = renderWithRouterAndRedux(<App />);
-    history.push('/meals/52977');
+    history.push('/meals/52844');
 
     await waitFor(() => expect(global.fetch).toHaveBeenCalled());
-    expect(screen.getByText('Corba')).toBeInTheDocument();
+    expect(screen.getByText('Lasagne')).toBeInTheDocument();
 
     const photo = screen.getByTestId('recipe-photo');
     expect(photo).toBeInTheDocument();
@@ -52,14 +49,8 @@ describe('Testand details Meals', () => {
     expect(btnFavorite).toBeInTheDocument();
     userEvent.click(btnFavorite);
     setLocalStorage(mockFavorites, listFavorites);
-    const shareButton = screen.getByTestId('share-btn');
-    window.document.execCommand = jest.fn().mockImplementation(() => ' ');
-    userEvent.click(shareButton);
-    const linkCopied = screen.getByText('Link copied!');
-    expect(linkCopied).toBeInTheDocument();
-    const startRecipeBtn = screen.getByTestId(startRecipeBtnId);
-    userEvent.click(startRecipeBtn);
-    /* expect(window.location.pathname).toBe('/drinks/178319/in-progress'); */
+    expect(localStorage.getItem(mockFavorites)).toEqual(JSON.stringify(listFavorites));
+
     global.fetch.mockClear();
   });
 });

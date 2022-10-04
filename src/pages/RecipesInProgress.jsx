@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { oneDrinkAPI, oneMealAPI } from '../services/mockteste/api';
-import RevenueOfMeals from '../components/RevenueOfMeals';
+import { useHistory } from 'react-router-dom';
 import RevenueOfDrinks from '../components/RevenueOfDrinks';
+import RevenueOfMeals from '../components/RevenueOfMeals';
+import { requestDrinkDetail, requestMealDetail } from '../services/recipesDetailsAPI';
 
 function RecipesInProgress() {
   const history = useHistory();
@@ -17,10 +17,10 @@ function RecipesInProgress() {
 
   useEffect(() => {
     if (infoData[1] === 'meals') {
-      dateOfRevenue(oneMealAPI, infoData[2], 'meals');
+      dateOfRevenue(requestMealDetail, infoData[2], 'meals');
     }
     if (infoData[1] === 'drinks') {
-      dateOfRevenue(oneDrinkAPI, infoData[2], 'drinks');
+      dateOfRevenue(requestDrinkDetail, infoData[2], 'drinks');
     }
   }, [setRevenues, history]);
 

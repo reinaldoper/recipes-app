@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { getFavoriteRecipes } from '../services/getFavoriteRecipes';
-import Header from '../components/Header';
-import FavoriteCard from '../components/FavoriteCards';
 import '../App.css';
+import FavoriteCard from '../components/FavoriteCards';
+import Header from '../components/Header';
+import { getFavoriteRecipes } from '../services/getFavoriteRecipes';
 
 function FavoriteRecipes() {
   const [currentFavorites, setCurrentFavorites] = useState([]);
@@ -14,7 +14,9 @@ function FavoriteRecipes() {
 
   useEffect(() => {
     const favorites = getFavoriteRecipes();
-    if (favorites) setCurrentFavorites(favorites);
+    if (favorites) {
+      setCurrentFavorites(favorites);
+    }
   }, []);
 
   const filterType = () => {

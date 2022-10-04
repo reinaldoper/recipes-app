@@ -1,57 +1,57 @@
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 /* import userEvent from '@testing-library/user-event'; */
 import React from 'react';
 import App from '../App';
-/* import DrinksPage from '../pages/DrinksPage'; */
-/* import MealsPage from '../pages/MealRecipe'; */
-import Corba from './helpers/Corba';
 import renderWithRouterAndRedux from './helpers/rendeWithRouterAndRedux';
 
-const mockFetch = (data) => Promise.resolve({
-  json: () => Promise.resolve(data),
-});
-
-const flushPromises = () => new Promise((r) => { setTimeout(r); });
+/* const flushPromises = () => new Promise((r) => { setTimeout(r); }); */
 const startRecipeBtnId = '0-horizontal-favorite-btn';
 
 describe('Testand Favorite Meals', () => {
-  beforeEach(() => {
-    const mockMultFetch = jest.fn()
-      .mockReturnValueOnce(mockFetch(Corba));
-    global.fetch = mockMultFetch;
-  });
   const mockFavorites = 'favoriteRecipes';
   const listFavorites = [{
+    alcoholicOrNot: '',
     id: '52977',
+    type: 'meal',
     nationality: 'Turkish',
+    category: 'Side',
     name: 'Corba',
     image: 'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg',
-  }];
-  const setLocalStorage = (id, data) => {
-    window.localStorage.setItem(id, JSON.stringify(data));
-  };
-  /* const startRecipeBtnId = 'start-recipe-btn'; */
-  setLocalStorage(mockFavorites, listFavorites);
+  },
+  /* {
+    alcoholicOrNot: '',
+    category: 'Pasta',
+    id: '52844',
+    image: 'https://www.themealdb.com/images/media/meals/wtsvxx1511296896.jpg',
+    name: 'Lasagne',
+    nationality: 'Italian',
+    type: 'meal',
+  } */];
   test('Favorite recipe Meals', async () => {
-    await flushPromises();
-    expect(localStorage.getItem(mockFavorites)).toEqual(JSON.stringify(listFavorites));
+    /* jest.spyOn(global.localStorage, 'getItem'); */
+    localStorage.removeItem(mockFavorites);
+    localStorage.setItem(mockFavorites, JSON.stringify(listFavorites));
     const { history } = renderWithRouterAndRedux(<App />);
     history.push('/favorite-recipes');
+    /* expect(getItem).toHaveBeenCalled(); */
+    await waitFor(() => {
+      const share = screen.getByTestId('0-horizontal-share-btn');
+      expect(share).toBeInTheDocument();
+      expect(screen.getByTestId('0-horizontal-top-text')).toBeInTheDocument();
+      expect(screen.getByTestId('0-horizontal-image')).toBeInTheDocument();
+      expect(screen.getByTestId('0-horizontal-name')).toBeInTheDocument();
+      expect(screen.getByTestId('0-horizontal-favorite-btn')).toBeInTheDocument();
 
-    /* await waitFor(() => expect(global.fetch).toHaveBeenCalled()); */
-    expect(screen.getByText('Corba')).toBeInTheDocument();
-
-    const share = screen.getByTestId('0-horizontal-share-btn');
-    expect(share).toBeInTheDocument();
-
-    window.document.execCommand = jest.fn().mockImplementation(() => ' ');
-    userEvent.click(share);
-    const linkCopied = screen.getByText('Link copied!');
-    expect(linkCopied).toBeInTheDocument();
-    const startRecipeBtn = screen.getByTestId(startRecipeBtnId);
-    userEvent.click(startRecipeBtn);
-    localStorage.removeItem(mockFavorites);
-    global.fetch.mockClear();
+      window.document.execCommand = jest.fn().mockImplementation(() => ' ');
+      userEvent.click(share);
+      const linkCopied = screen.getByText('Link copied!');
+      expect(linkCopied).toBeInTheDocument();
+      const startRecipeBtn = screen.getByTestId(startRecipeBtnId);
+      userEvent.click(startRecipeBtn);
+      localStorage.removeItem(mockFavorites);
+    });
+    /* const share = screen.getByTestId('0-horizontal-share-btn'); */
+    /* global.fetch.mockClear(); */
   });
 });
