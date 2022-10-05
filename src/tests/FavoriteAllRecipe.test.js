@@ -26,7 +26,7 @@ describe('Testand Favorite Meals', () => {
     localStorage.setItem(mockFavorites, JSON.stringify(listFavorites));
     const { history } = renderWithRouterAndRedux(<App />);
     history.push('/favorite-recipes');
-    const btn = screen.getByTestId('filter-by-meal-btn');
+    const btn = screen.getByTestId('filter-by-all-btn');
     expect(btn).toBeInTheDocument();
     userEvent.click(btn);
     await waitFor(() => {

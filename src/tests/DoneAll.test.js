@@ -5,11 +5,8 @@ import React from 'react';
 import App from '../App';
 import renderWithRouterAndRedux from './helpers/rendeWithRouterAndRedux';
 
-/* const flushPromises = () => new Promise((r) => { setTimeout(r); }); */
-const startRecipeBtnId = '0-horizontal-favorite-btn';
-
 describe('Testand Favorite Meals', () => {
-  const mockFavorites = 'favoriteRecipes';
+  const mockFavorites = 'doneRecipes';
   const listFavorites = [{
     alcoholicOrNot: '',
     id: '52977',
@@ -25,8 +22,8 @@ describe('Testand Favorite Meals', () => {
     localStorage.removeItem(mockFavorites);
     localStorage.setItem(mockFavorites, JSON.stringify(listFavorites));
     const { history } = renderWithRouterAndRedux(<App />);
-    history.push('/favorite-recipes');
-    const btn = screen.getByTestId('filter-by-meal-btn');
+    history.push('/done-recipes');
+    const btn = screen.getByTestId('filter-by-all-btn');
     expect(btn).toBeInTheDocument();
     userEvent.click(btn);
     await waitFor(() => {
@@ -35,14 +32,11 @@ describe('Testand Favorite Meals', () => {
       expect(screen.getByTestId('0-horizontal-top-text')).toBeInTheDocument();
       expect(screen.getByTestId('0-horizontal-image')).toBeInTheDocument();
       expect(screen.getByTestId('0-horizontal-name')).toBeInTheDocument();
-      expect(screen.getByTestId('0-horizontal-favorite-btn')).toBeInTheDocument();
 
       window.document.execCommand = jest.fn().mockImplementation(() => ' ');
       userEvent.click(share);
       const linkCopied = screen.getByText('Link copied!');
       expect(linkCopied).toBeInTheDocument();
-      const startRecipeBtn = screen.getByTestId(startRecipeBtnId);
-      userEvent.click(startRecipeBtn);
       localStorage.removeItem(mockFavorites);
     });
     /* const share = screen.getByTestId('0-horizontal-share-btn'); */
