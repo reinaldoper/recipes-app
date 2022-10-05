@@ -8,37 +8,33 @@ import renderWithRouterAndRedux from './helpers/rendeWithRouterAndRedux';
 /* const flushPromises = () => new Promise((r) => { setTimeout(r); }); */
 const startRecipeBtnId = '0-horizontal-favorite-btn';
 
-describe('Testand Favorite Meals', () => {
+describe('Testand Favorite drinks', () => {
   const mockFavorites = 'favoriteRecipes';
   const listFavorites = [{
     alcoholicOrNot: '',
-    id: '52977',
-    type: 'meal',
-    nationality: 'Turkish',
-    category: 'Side',
-    name: 'Corba',
-    image: 'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg',
+    id: '14610',
+    type: 'drink',
+    category: 'Shot',
+    name: 'ACID',
+    image: 'https://www.thecocktaildb.com/images/media/drink/xuxpxt1479209317.jpg',
   },
   ];
-  test('Favorite recipe Meals', async () => {
+  test('Favorite recipe drinks', async () => {
     /* jest.spyOn(global.localStorage, 'getItem'); */
     localStorage.removeItem(mockFavorites);
     localStorage.setItem(mockFavorites, JSON.stringify(listFavorites));
     const { history } = renderWithRouterAndRedux(<App />);
     history.push('/favorite-recipes');
-    const btn = screen.getByTestId('filter-by-meal-btn');
+    /* expect(getItem).toHaveBeenCalled(); */
+    const btn = screen.getByTestId('filter-by-drink-btn');
     expect(btn).toBeInTheDocument();
     userEvent.click(btn);
     await waitFor(() => {
-      const share = screen.getByTestId('0-horizontal-share-btn');
-      expect(share).toBeInTheDocument();
-      expect(screen.getByTestId('0-horizontal-top-text')).toBeInTheDocument();
-      expect(screen.getByTestId('0-horizontal-image')).toBeInTheDocument();
-      expect(screen.getByTestId('0-horizontal-name')).toBeInTheDocument();
-      expect(screen.getByTestId('0-horizontal-favorite-btn')).toBeInTheDocument();
+      const share = screen.queryAllByTestId('0-horizontal-share-btn');
+      expect(share[0]).toBeInTheDocument();
 
       window.document.execCommand = jest.fn().mockImplementation(() => ' ');
-      userEvent.click(share);
+      userEvent.click(share[0]);
       const linkCopied = screen.getByText('Link copied!');
       expect(linkCopied).toBeInTheDocument();
       const startRecipeBtn = screen.getByTestId(startRecipeBtnId);
