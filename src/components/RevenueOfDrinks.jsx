@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import { object } from 'prop-types';
 import DrinksIngredient from './DrinksIngredient';
 import './cssComponents/RecipesDetail.css';
 import {
@@ -9,13 +9,34 @@ import {
 import {
   setDoneRecipesLocalStorage,
 } from '../localStorageFunctions/functionsSetLocalStorage';
+import whiteHeart from '../images/whiteHeartIcon.svg';
+import blackHeart from '../images/blackHeartIcon.svg';
+
+const copy = require('clipboard-copy');
 
 function RevenueOfDrinks({ drinks }) {
   const [sizeOfRevenue, setSizeOfRevenue] = useState(0);
   const [sizeOfFinishSteps, setSizeOfFinishSteps] = useState(0);
   const [isDisabled, setIsDisabled] = useState(false);
   const [doneRecipes, setDoneRecipes] = useState([]);
-  const { push } = useHistory();
+  const [confirmCopy, setConfirmCopy] = useState(false);
+  const [saveInLocalHistorage, setSaveInLocalHistorage] = useState(false);
+  const [dataRecipes, setDataRecipes] = useState({
+    alcoholicOrNot: '',
+    category: '',
+    id: '',
+    image: '',
+    name: '',
+    nationality: '',
+    type: 'drink',
+  });
+  const history = useHistory();
+
+  const clickedCopy = () => {
+    setConfirmCopy(true);
+    const url = history.location.pathname.split('/');
+    copy(`http://localhost:3000/${url[1]}/${url[2]}`);
+  };
 
   const digit2 = (number) => {
     const MAGIC = 10;
@@ -44,6 +65,78 @@ function RevenueOfDrinks({ drinks }) {
     return newRecipe;
   };
 
+  const getFavorites = () => JSON.parse(localStorage.getItem('favoriteRecipes'));
+
+  const saveFromLocalHistorage = () => {
+    const recipesLocalHistorage = getFavorites();
+    if (!recipesLocalHistorage) {
+      localStorage.setItem(
+        'favoriteRecipes',
+        JSON.stringify([
+          {
+            id: drinks[0].idDrink,
+          },
+        ]),
+      );
+    }
+    const getRecipesUpdated = getFavorites();
+    const recipeInProgress = getRecipesUpdated.filter(
+      (recipe) => recipe.id !== drinks[0].idDrink && recipe !== [],
+    );
+    if (!recipeInProgress[0]) {
+      localStorage.setItem('favoriteRecipes', JSON.stringify([dataRecipes]));
+    } else {
+      localStorage.setItem(
+        'favoriteRecipes',
+        JSON.stringify([...recipeInProgress, dataRecipes]),
+      );
+    }
+  };
+
+  const removeFromLocalHistorage = () => {
+    const recipesLocalHistorage = getFavorites();
+    const recipeFavorite = recipesLocalHistorage.filter(
+      (recipe) => recipe.id !== drinks[0].idDrink && recipe !== [],
+    );
+    if (recipeFavorite.length === 0) {
+      localStorage.setItem('favoriteRecipes', JSON.stringify([]));
+    } else {
+      localStorage.setItem('favoriteRecipes', JSON.stringify([recipeFavorite]));
+    }
+  };
+
+  const handleClickFavorite = () => {
+    if (!saveInLocalHistorage) {
+      saveFromLocalHistorage();
+      setSaveInLocalHistorage(true);
+    } else {
+      removeFromLocalHistorage();
+      setSaveInLocalHistorage(false);
+    }
+  };
+
+  useEffect(() => {
+    const recipesLocalHistorage = getFavorites();
+    if (recipesLocalHistorage) {
+      const isFavorite = recipesLocalHistorage.some(
+        (favorite) => favorite.id === drinks[0].idDrink,
+      );
+      setSaveInLocalHistorage(isFavorite);
+    }
+  }, [drinks, saveInLocalHistorage]);
+
+  useEffect(() => {
+    setDataRecipes({
+      alcoholicOrNot: drinks[0].strAlcoholic,
+      category: drinks[0].strCategory,
+      id: drinks[0].idDrink,
+      image: drinks[0].strDrinkThumb,
+      name: drinks[0].strDrink,
+      nationality: '',
+      type: 'drink',
+    });
+  }, [drinks]);
+
   useEffect(() => {
     const verifyIsDisabled = sizeOfRevenue === sizeOfFinishSteps;
     setIsDisabled(verifyIsDisabled);
@@ -58,7 +151,7 @@ function RevenueOfDrinks({ drinks }) {
     } else {
       setDoneRecipesLocalStorage([...doneRecipes, newObjectDrink]);
     }
-    push('/done-recipes');
+    history.push('/done-recipes');
   };
 
   return (
@@ -87,12 +180,23 @@ function RevenueOfDrinks({ drinks }) {
               <div>
                 <p data-testid="instructions">{drinks[0].strInstructions}</p>
               </div>
-              <button type="button" data-testid="share-btn">
+              <button type="button" data-testid="share-btn" onClick={ clickedCopy }>
                 Compartilhar
               </button>
-              <button type="button" data-testid="favorite-btn">
-                Favoritar
+              {confirmCopy && <p>Link copied!</p>}
+
+              <button
+                type="button"
+                data-testid="favorite-btn"
+                onClick={ handleClickFavorite }
+                src={ saveInLocalHistorage ? blackHeart : whiteHeart }
+              >
+                <img
+                  src={ saveInLocalHistorage ? blackHeart : whiteHeart }
+                  alt="foto de favorito"
+                />
               </button>
+
               <button
                 type="button"
                 data-testid="finish-recipe-btn"
@@ -112,33 +216,5 @@ function RevenueOfDrinks({ drinks }) {
 export default RevenueOfDrinks;
 
 RevenueOfDrinks.propTypes = {
-  drinks: PropTypes.arrayOf(
-    PropTypes.shape({
-      strCategory: PropTypes.string,
-      strDrinkThumb: PropTypes.string,
-      strAlcoholic: PropTypes.string,
-      strIngredient1: PropTypes.string,
-      strIngredient2: PropTypes.string,
-      strIngredient3: PropTypes.string,
-      strIngredient4: PropTypes.string,
-      strIngredient5: PropTypes.string,
-      strIngredient6: PropTypes.string,
-      strIngredient7: PropTypes.string,
-      strIngredient8: PropTypes.string,
-      strIngredient9: PropTypes.string,
-      strIngredient10: PropTypes.string,
-      strMeasure1: PropTypes.string,
-      strMeasure2: PropTypes.string,
-      strMeasure3: PropTypes.string,
-      strMeasure4: PropTypes.string,
-      strMeasure5: PropTypes.string,
-      strMeasure6: PropTypes.string,
-      strMeasure7: PropTypes.string,
-      strMeasure8: PropTypes.string,
-      strMeasure9: PropTypes.string,
-      strMeasure10: PropTypes.string,
-      strInstructions: PropTypes.string,
-      strGlass: PropTypes.string,
-    }),
-  ).isRequired,
-};
+  recipe: object,
+}.isrequired;
