@@ -9,13 +9,34 @@ import {
 import {
   setDoneRecipesLocalStorage,
 } from '../localStorageFunctions/functionsSetLocalStorage';
+import whiteHeart from '../images/whiteHeartIcon.svg';
+import blackHeart from '../images/blackHeartIcon.svg';
+
+const copy = require('clipboard-copy');
 
 function RevenueOfMeals({ meals }) {
   const [sizeOfRevenue, setSizeOfRevenue] = useState(0);
   const [sizeOfFinishSteps, setSizeOfFinishSteps] = useState(0);
   const [isDisabled, setIsDisabled] = useState(false);
   const [doneRecipes, setDoneRecipes] = useState([]);
-  const { push } = useHistory();
+  const [confirmCopy, setConfirmCopy] = useState(false);
+  const [saveInLocalHistorage, setSaveInLocalHistorage] = useState(false);
+  const [dataRecipes, setDataRecipes] = useState({
+    alcoholicOrNot: '',
+    category: '',
+    id: '',
+    image: '',
+    name: '',
+    nationality: '',
+    type: 'meal',
+  });
+  const history = useHistory();
+
+  const clickedCopy = () => {
+    setConfirmCopy(true);
+    const url = history.location.pathname.split('/');
+    copy(`http://localhost:3000/${url[1]}/${url[2]}`);
+  };
 
   const digit2 = (number) => {
     const MAGIC = 10;
@@ -44,6 +65,78 @@ function RevenueOfMeals({ meals }) {
     return newRecipe;
   };
 
+  const getFavorites = () => JSON.parse(localStorage.getItem('favoriteRecipes'));
+
+  const saveFromLocalHistorage = () => {
+    const recipesLocalHistorage = getFavorites();
+    if (!recipesLocalHistorage) {
+      localStorage.setItem(
+        'favoriteRecipes',
+        JSON.stringify([
+          {
+            id: meals[0].idMeal,
+          },
+        ]),
+      );
+    }
+    const getRecipesUpdated = getFavorites();
+    const recipeInProgress = getRecipesUpdated.filter(
+      (recipe) => recipe.id !== meals[0].idMeal && recipe !== [],
+    );
+    if (!recipeInProgress[0]) {
+      localStorage.setItem('favoriteRecipes', JSON.stringify([dataRecipes]));
+    } else {
+      localStorage.setItem(
+        'favoriteRecipes',
+        JSON.stringify([...recipeInProgress, dataRecipes]),
+      );
+    }
+  };
+
+  const removeFromLocalHistorage = () => {
+    const recipesLocalHistorage = getFavorites();
+    const recipeFavorite = recipesLocalHistorage.filter(
+      (recipe) => recipe.id !== meals[0].idMeal && recipe !== [],
+    );
+    if (recipeFavorite.length === 0) {
+      localStorage.setItem('favoriteRecipes', JSON.stringify([]));
+    } else {
+      localStorage.setItem('favoriteRecipes', JSON.stringify([recipeFavorite]));
+    }
+  };
+
+  const handleClickFavorite = () => {
+    if (!saveInLocalHistorage) {
+      saveFromLocalHistorage();
+      setSaveInLocalHistorage(true);
+    } else {
+      removeFromLocalHistorage();
+      setSaveInLocalHistorage(false);
+    }
+  };
+
+  useEffect(() => {
+    const recipesLocalHistorage = getFavorites();
+    if (recipesLocalHistorage) {
+      const isFavorite = recipesLocalHistorage.some(
+        (favorite) => favorite.id === meals[0].idMeal,
+      );
+      setSaveInLocalHistorage(isFavorite);
+    }
+  }, [meals, saveInLocalHistorage]);
+
+  useEffect(() => {
+    setDataRecipes({
+      alcoholicOrNot: '',
+      category: meals[0].strCategory,
+      id: meals[0].idMeal,
+      image: meals[0].strMealThumb,
+      name: meals[0].strMeal,
+      nationality: meals[0].strArea,
+      type: 'meal',
+    });
+  }, [meals]);
+
   useEffect(() => {
     const verifyIsDisabled = sizeOfRevenue === sizeOfFinishSteps;
     setIsDisabled(verifyIsDisabled);
@@ -58,7 +151,7 @@ function RevenueOfMeals({ meals }) {
     } else {
       setDoneRecipesLocalStorage([...doneRecipes, newObjectMeal]);
     }
-    push('/done-recipes');
+    history.push('/done-recipes');
   };
 
   return (
@@ -90,12 +183,23 @@ function RevenueOfMeals({ meals }) {
                 {meals[0].strInstructions}
               </p>
             </div>
-            <button type="button" data-testid="share-btn">
+            <button type="button" data-testid="share-btn" onClick={ clickedCopy }>
               Compartilhar
             </button>
-            <button type="button" data-testid="favorite-btn">
-              Favoritar
+            {confirmCopy && <p>Link copied!</p>}
+
+            <button
+              type="button"
+              data-testid="favorite-btn"
+              onClick={ handleClickFavorite }
+              src={ saveInLocalHistorage ? blackHeart : whiteHeart }
+            >
+              <img
+                src={ saveInLocalHistorage ? blackHeart : whiteHeart }
+                alt="foto de favorito"
+              />
             </button>
+
             <button
               type="button"
               data-testid="finish-recipe-btn"
