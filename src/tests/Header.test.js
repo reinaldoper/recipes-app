@@ -1,7 +1,6 @@
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-import Header from '../components/Header';
 import DrinksPage from '../pages/DrinksPage';
 import MealsPage from '../pages/MealsPage';
 /* import MealsPage from '../pages/MealRecipe'; */
@@ -43,18 +42,6 @@ describe('Testando componente Header', () => {
     userEvent.type(input, rice);
 
     expect(input).toHaveValue(rice);
-  });
-  test('header test', () => {
-    renderWithRouterAndRedux(<Header />, {
-    });
-    const title = screen.getByTestId('page-title');
-    const ingredientBTN = screen.getByTestId(ingredient);
-    const NameBTN = screen.getByTestId(name);
-    const firsLetterBTN = screen.getByTestId(first);
-    expect(title).toBeInTheDocument();
-    expect(ingredientBTN).toBeInTheDocument();
-    expect(NameBTN).toBeInTheDocument();
-    expect(firsLetterBTN).toBeInTheDocument();
   });
   test('meals page', async () => {
     jest.spyOn(global, 'fetch').mockImplementation(mockFetch);

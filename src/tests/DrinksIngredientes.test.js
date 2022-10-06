@@ -23,9 +23,22 @@ describe('Meals ingredients', () => {
   });
   const phase = 'phrase-content';
   const finisClass = 'finish phrase-content';
+  const mockFavorites = 'doneRecipes';
+  const listFavorites = [{
+    alcoholicOrNot: '',
+    id: '52977',
+    type: 'meal',
+    nationality: 'Turkish',
+    category: 'Side',
+    doneDate: '05/09/2022',
+    name: 'Corba',
+    image: 'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg',
+  },
+  ];
   test('Ingredients', async () => {
     await flushPromises();
-
+    localStorage.removeItem(mockFavorites);
+    localStorage.setItem(mockFavorites, JSON.stringify(listFavorites));
     const { history } = renderWithRouterAndRedux(<App />);
     history.push('drinks/15997/in-progress');
 
@@ -60,6 +73,11 @@ describe('Meals ingredients', () => {
     expect(finish).toBeVisible();
     userEvent.click(finish);
     expect(history.location.pathname).toEqual('/done-recipes');
+    localStorage.removeItem(mockFavorites);
+    localStorage.setItem(mockFavorites, JSON.stringify(listFavorites));
+    expect(localStorage.getItem(mockFavorites)).toEqual(JSON.stringify(listFavorites));
+    const date = screen.queryAllByText('05/09/2022');
+    expect(date[0]).toBeInTheDocument();
     global.fetch.mockClear();
   });
 });
