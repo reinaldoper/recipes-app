@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import CardRecipes from './CardRecipe';
 
-function Recipes({ recipesDrinks, recipesMeals, buttonClick }) {
+function Recipes({ recipesDrinks, recipesMeals, buttonClick, categorySelected }) {
   const history = useHistory();
 
   const redirectDrinks = () => {
@@ -18,9 +18,10 @@ function Recipes({ recipesDrinks, recipesMeals, buttonClick }) {
   };
 
   const listDrinks = () => {
+    console.log(categorySelected);
     if (recipesDrinks.length === 0 && buttonClick === 'drinks') {
       global.alert('Sorry, we haven\'t found any recipes for these filters.');
-    } else if (recipesDrinks && recipesDrinks.length === 1) {
+    } else if (recipesDrinks && recipesDrinks.length === 1 && !categorySelected) {
       redirectDrinks();
     } else {
       const list = recipesDrinks.map((drink, i) => {
@@ -42,7 +43,7 @@ function Recipes({ recipesDrinks, recipesMeals, buttonClick }) {
   const listMeals = () => {
     if (recipesMeals.length === 0 && buttonClick === 'meals') {
       global.alert('Sorry, we haven\'t found any recipes for these filters.');
-    } else if (recipesMeals && recipesMeals.length === 1) {
+    } else if (recipesMeals && recipesMeals.length === 1 && !categorySelected) {
       redirectMeals();
     } else {
       const list = recipesMeals.map((meals, i) => {
@@ -73,6 +74,7 @@ const mapStateToProps = (state) => ({
   recipesDrinks: state.reducerFetch.recipesDrinks,
   recipesMeals: state.reducerFetch.recipesMeals,
   buttonClick: state.reducerFetch.buttonClick,
+  categorySelected: state.reducerFetch.categorySelected,
 });
 
 Recipes.propTypes = {

@@ -54,7 +54,6 @@ function DrinkRecipes({
   return (
     <section>
       <Header search titlePage="Drinks" iconProfile iconSearch />
-      {console.log(drinksCategories)}
       {drinksCategories.length > 0 && (
         <ButtonsCategories categories={ drinksCategories } />
       )}

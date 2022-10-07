@@ -14,8 +14,8 @@ function DoneRecipes() {
   });
 
   useEffect(() => {
-    const Recipes = getDoneRecipesLocalStorage();
-    if (doneRecipes) setDoneRecipes(Recipes);
+    const recipes = getDoneRecipesLocalStorage();
+    setDoneRecipes(recipes);
   }, [typesFilters]);
 
   const test = () => {

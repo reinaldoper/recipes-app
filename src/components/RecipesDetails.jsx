@@ -22,6 +22,7 @@ function RecipesDetails({ recipe, sixDrinks, sixMeals, setPageSelect }) {
     alcoholic: '',
     amounts: [],
   });
+
   const [recommendationDrinks, setDrinks] = useState([]);
   const [recommendationMeals, setMeals] = useState([]);
   const [doneRecipes, setDoneRecipes] = useState([]);

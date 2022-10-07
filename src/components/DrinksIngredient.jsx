@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-  getRecipesToLocalHistorage,
-  saveRecipesToLocalHistorage,
-} from '../services/LocalHistorage';
-import './RecipesInProgress.css';
+  setInprogressRecipesLocalStorage,
+} from '../localStorageFunctions/functionsSetLocalStorage';
+import {
+  getInprogressRecipesLocalStorage,
+} from '../localStorageFunctions/functionsGetLocalStorage';
 
 function DrinksIngredient({
   drinks,
@@ -71,14 +72,14 @@ function DrinksIngredient({
 
   useEffect(() => {
     const getFromLocalHistorage = () => {
-      const recipesLocalHistorage = getRecipesToLocalHistorage();
+      const recipesLocalHistorage = getInprogressRecipesLocalStorage();
       if (!recipesLocalHistorage) {
-        localStorage.setItem('inProgressRecipes', JSON.stringify([{
+        setInprogressRecipesLocalStorage([{
           id: idDrink,
           recipesFinish: [],
-        }]));
+        }]);
       }
-      const getRecipesUpdated = getRecipesToLocalHistorage();
+      const getRecipesUpdated = getInprogressRecipesLocalStorage();
       const recipeInProgress = getRecipesUpdated
         .filter((recipe) => recipe.id === drinks[0].idDrink);
       if (!recipeInProgress[0]) {
@@ -97,11 +98,11 @@ function DrinksIngredient({
 
   useEffect(() => {
     const updateLocalHistorage = (arr) => {
-      const recipesLocalHistorage = getRecipesToLocalHistorage();
+      const recipesLocalHistorage = getInprogressRecipesLocalStorage();
       const elementsForLocalHistorage = recipesLocalHistorage.filter(
         (recipe) => recipe.id !== idDrink && recipe.id !== '',
       );
-      saveRecipesToLocalHistorage([...elementsForLocalHistorage, arr]);
+      setInprogressRecipesLocalStorage([...elementsForLocalHistorage, arr]);
     };
     updateLocalHistorage(nameFinish);
   }, [nameFinish, drinks, idDrink]);

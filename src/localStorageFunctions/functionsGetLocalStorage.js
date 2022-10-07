@@ -1,6 +1,6 @@
-export const getMealsTokenLocalStorage = () => {
-  localStorage.getItem('mealsToken');
-};
+// export const getMealsTokenLocalStorage = () => {
+//   localStorage.getItem('mealsToken');
+// };
 
 export const getDrinksTokenLocalStorage = () => localStorage.getItem('drinksToken');
 
@@ -12,5 +12,5 @@ export const getDoneRecipesLocalStorage = () => JSON
 export const getFavoriteRecipesLocalStorage = () => JSON
   .parse(localStorage.getItem('favoriteRecipes'));
 
-export const getInprogressRecipesLocalStorage = (recipes) => JSON
-  .parse(localStorage.getItem('inProgressRecipes', JSON.stringify(recipes)));
+export const getInprogressRecipesLocalStorage = () => JSON
+  .parse(localStorage.getItem('inProgressRecipes'));
