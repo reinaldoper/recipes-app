@@ -1,5 +1,5 @@
 import { screen, waitFor } from '@testing-library/react';
-/* import userEvent from '@testing-library/user-event'; */
+import userEvent from '@testing-library/user-event';
 import React from 'react';
 import App from '../App';
 /* import DrinksPage from '../pages/DrinksPage'; */
@@ -42,6 +42,12 @@ describe('Drinks improgress ingredients', () => {
     expect(step1).toBeInTheDocument();
     const label = screen.getByTestId('0-ingredient-step');
     expect(label).toBeInTheDocument();
+    const share = screen.getByTestId('share-btn');
+    expect(share).toBeInTheDocument();
+    window.document.execCommand = jest.fn().mockImplementation(() => ' ');
+    userEvent.click(share);
+    const linkCopied = screen.getByText('Link copied!');
+    expect(linkCopied).toBeInTheDocument();
 
     global.fetch.mockClear();
   });
