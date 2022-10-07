@@ -23,6 +23,9 @@ describe('Meals ingredients', () => {
   });
   const phase = 'phrase-content';
   const finisClass = 'finish phrase-content';
+  const data = '05/09/2022';
+  const mockedDate = new Date(data);
+  console.log(mockedDate);
   const mockFavorites = 'doneRecipes';
   const listFavorites = [{
     alcoholicOrNot: '',
@@ -30,7 +33,7 @@ describe('Meals ingredients', () => {
     type: 'meal',
     nationality: 'Turkish',
     category: 'Side',
-    doneDate: '05/09/2022',
+    doneDate: data,
     name: 'Corba',
     image: 'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg',
   },
@@ -72,6 +75,12 @@ describe('Meals ingredients', () => {
     const finish = screen.getByText('Finalizar a receita');
     expect(finish).toBeVisible();
     userEvent.click(finish);
+
+    jest.spyOn(global, 'Date').mockImplementation(() => mockedDate);
+    localStorage.removeItem(mockFavorites);
+    localStorage.setItem(mockFavorites, JSON.stringify(listFavorites));
+    expect(localStorage.getItem(mockFavorites)).toEqual(JSON.stringify(listFavorites));
+    console.log(localStorage.getItem(mockFavorites));
     expect(history.location.pathname).toEqual('/done-recipes');
     localStorage.removeItem(mockFavorites);
     localStorage.setItem(mockFavorites, JSON.stringify(listFavorites));
