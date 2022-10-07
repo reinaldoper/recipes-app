@@ -9,6 +9,7 @@ const QUANTITY_MEALS = 5;
 function DrinkRecipe({ history }) {
   const [recipe, setRecipe] = useState({});
   const [meals, setMeals] = useState([]);
+
   useEffect(() => {
     (async () => {
       const stringPathName = history.location.pathname;
