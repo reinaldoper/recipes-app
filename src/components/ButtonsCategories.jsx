@@ -28,7 +28,7 @@ function ButtonsCategories({
     } else if (pageSelected === 'drinks' && categorySel === categorie) {
       const recipes = await recipesDrinksAPI();
       setRecipesDrinks(recipes);
-    } else /* (pageSelected === 'meals' && categorySel === categorie)  */{
+    } else {
       const recipes = await recipesMealsAPI();
       setRecipesMeals(recipes);
     }
@@ -38,7 +38,7 @@ function ButtonsCategories({
     if (pageSelected === 'drinks') {
       const recipes = await recipesDrinksAPI();
       setRecipesDrinks(recipes);
-    } else /* (pageSelected === 'meals')  */{
+    } else {
       const recipes = await recipesMealsAPI();
       setRecipesMeals(recipes);
     }

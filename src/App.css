@@ -77,10 +77,6 @@ body {
   width: 30px;
 }
 
-.image-recipes {
-  width: 250px;
-}
-
 .cards {
   display: flex;
   flex-flow: row wrap;
@@ -111,17 +107,6 @@ body {
   width: 250px;
 }
 
-.container-details {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.container-ingredients {
-  display: flex;
-}
-
 .instruction {
   align-items: center;
   display: flex;
@@ -137,4 +122,43 @@ body {
 
 .check-image {
   visibility: hidden;
+}
+
+footer {
+  bottom: 0;
+  position: fixed;
+}
+
+.image-recipes {
+  height: 200px;
+  width: 200px;
+}
+
+.container-details {
+  align-items: center;
+  display: flex;
+  flex-flow: wrap;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.container-ingredients {
+  display: flex;
+  flex-flow: wrap;
+  flex-direction: column;
+}
+
+.container-revenue {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.phrase-content {
+  display: flex;
+  flex-flow: row nowrap;
+  margin-bottom: 10px;
+}
+
+.finish {
+  text-decoration: line-through;
 }

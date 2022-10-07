@@ -12,5 +12,5 @@ export const getDoneRecipesLocalStorage = () => JSON
 export const getFavoriteRecipesLocalStorage = () => JSON
   .parse(localStorage.getItem('favoriteRecipes'));
 
-export const getInprogressRecipesLocalStorage = (recipes) => JSON
-  .parse(localStorage.getItem('inProgressRecipes', JSON.stringify(recipes)));
+export const getInprogressRecipesLocalStorage = () => JSON
+  .parse(localStorage.getItem('inProgressRecipes'));

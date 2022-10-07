@@ -1,5 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import {
+  setUserLocalStorage,
+  setMealsTokenLocalStorage,
+  setDrinksTokenLocalStorage,
+} from '../localStorageFunctions/functionsSetLocalStorage';
 
 export default class Login extends Component {
   state = {
@@ -40,9 +45,9 @@ export default class Login extends Component {
     };
     const mealsToken = 1;
     const drinksToken = 1;
-    localStorage.setItem('user', JSON.stringify(user));
-    localStorage.setItem('mealsToken', mealsToken);
-    localStorage.setItem('drinksToken', drinksToken);
+    setUserLocalStorage(user);
+    setMealsTokenLocalStorage(mealsToken);
+    setDrinksTokenLocalStorage(drinksToken);
     history.push('/meals');
   };
 

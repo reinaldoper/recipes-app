@@ -2,12 +2,13 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
+import { getUserLocalStorage } from '../localStorageFunctions/functionsGetLocalStorage';
 
 export default class Profile extends Component {
   state = { email: '' };
 
   componentDidMount() {
-    const email = JSON.parse(localStorage.getItem('user'));
+    const email = getUserLocalStorage();
     this.setState({ email });
   }
 

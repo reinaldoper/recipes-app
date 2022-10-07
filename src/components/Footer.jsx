@@ -6,7 +6,6 @@ import drinkIcon from '../images/drinkIcon.svg';
 import mealIcon from '../images/mealIcon.svg';
 import { fetchDrinksRecipes, fetchMealsRecipes } from '../redux/actions/action';
 import { recipesDrinksAPI, recipesMealsAPI } from '../services/RecipesAPI';
-import './Footer.css';
 
 function Footer({ requiredFetchDrinksRecipe, requiredFetchMealssRecipe }) {
   const requiredDrinksRecipes = async () => {

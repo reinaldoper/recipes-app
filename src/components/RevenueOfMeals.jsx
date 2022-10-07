@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { object } from 'prop-types';
 import MealsIngredient from './MealsIngredient';
-import './cssComponents/RecipesDetail.css';
 import {
   getDoneRecipesLocalStorage,
+  getFavoriteRecipesLocalStorage,
 } from '../localStorageFunctions/functionsGetLocalStorage';
 import {
   setDoneRecipesLocalStorage,
+  setFavoriteRecipesLocalStorage,
 } from '../localStorageFunctions/functionsSetLocalStorage';
 import whiteHeart from '../images/whiteHeartIcon.svg';
 import blackHeart from '../images/blackHeartIcon.svg';
@@ -65,31 +66,21 @@ function RevenueOfMeals({ meals }) {
     return newRecipe;
   };
 
-  const getFavorites = () => JSON.parse(localStorage.getItem('favoriteRecipes'));
+  const getFavorites = () => getFavoriteRecipesLocalStorage();
 
   const saveFromLocalHistorage = () => {
     const recipesLocalHistorage = getFavorites();
     if (!recipesLocalHistorage) {
-      localStorage.setItem(
-        'favoriteRecipes',
-        JSON.stringify([
-          {
-            id: meals[0].idMeal,
-          },
-        ]),
-      );
+      setFavoriteRecipesLocalStorage([{ id: meals[0].idMeal }]);
     }
     const getRecipesUpdated = getFavorites();
     const recipeInProgress = getRecipesUpdated.filter(
       (recipe) => recipe.id !== meals[0].idMeal && recipe !== [],
     );
     if (!recipeInProgress[0]) {
-      localStorage.setItem('favoriteRecipes', JSON.stringify([dataRecipes]));
+      setFavoriteRecipesLocalStorage([dataRecipes]);
     } else {
-      localStorage.setItem(
-        'favoriteRecipes',
-        JSON.stringify([...recipeInProgress, dataRecipes]),
-      );
+      setFavoriteRecipesLocalStorage([...recipeInProgress, dataRecipes]);
     }
   };
 
@@ -99,9 +90,9 @@ function RevenueOfMeals({ meals }) {
       (recipe) => recipe.id !== meals[0].idMeal && recipe !== [],
     );
     if (recipeFavorite.length === 0) {
-      localStorage.setItem('favoriteRecipes', JSON.stringify([]));
+      setFavoriteRecipesLocalStorage([]);
     } else {
-      localStorage.setItem('favoriteRecipes', JSON.stringify([recipeFavorite]));
+      setFavoriteRecipesLocalStorage([recipeFavorite]);
     }
   };
 

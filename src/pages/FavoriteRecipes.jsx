@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import '../App.css';
 import FavoriteCard from '../components/FavoriteCards';
 import Header from '../components/Header';
 import { getFavoriteRecipes } from '../services/getFavoriteRecipes';
