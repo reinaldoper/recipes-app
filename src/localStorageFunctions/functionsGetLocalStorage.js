@@ -1,6 +1,6 @@
-export const getMealsTokenLocalStorage = () => {
-  localStorage.getItem('mealsToken');
-};
+// export const getMealsTokenLocalStorage = () => {
+//   localStorage.getItem('mealsToken');
+// };
 
 export const getDrinksTokenLocalStorage = () => localStorage.getItem('drinksToken');
 

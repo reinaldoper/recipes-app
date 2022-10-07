@@ -13,9 +13,7 @@ function FavoriteRecipes() {
 
   useEffect(() => {
     const favorites = getFavoriteRecipes();
-    if (favorites) {
-      setCurrentFavorites(favorites);
-    }
+    setCurrentFavorites(favorites);
   }, []);
 
   const filterType = () => {
