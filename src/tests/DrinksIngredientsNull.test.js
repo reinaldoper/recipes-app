@@ -24,13 +24,15 @@ describe('Meals ingredients', () => {
   const setLocalStorage = (id, data) => {
     window.localStorage.setItem(id, JSON.stringify(data));
   };
+  const data = '07/09/2022';
   const phase = 'phrase-content';
   const finisClass = 'finish phrase-content';
-  const mockFavorites = 'doneRecipes';
+  const mockFavorites = 'favoriteRecipes';
+  const listFavorites1 = [];
   const listFavorites = [{
     alcoholicOrNot: 'Optional alcohol',
     category: 'Ordinary Drink',
-    doneDate: '07/09/2022',
+    doneDate: data,
     id: '15997',
     image: 'https://www.thecocktaildb.com/images/media/drink/vyxwut1468875960.jpg',
     name: 'GG',
@@ -40,6 +42,8 @@ describe('Meals ingredients', () => {
   ];
   test('Ingredients', async () => {
     await flushPromises();
+    setLocalStorage(mockFavorites, listFavorites);
+    expect(localStorage.getItem(mockFavorites)).toEqual(JSON.stringify(listFavorites));
     const { history } = renderWithRouterAndRedux(<App />);
     history.push('drinks/15997/in-progress');
 
@@ -68,18 +72,21 @@ describe('Meals ingredients', () => {
     expect(label).toHaveClass(finisClass, { exact: true });
     fireEvent.click(step2);
 
+    setLocalStorage(mockFavorites, listFavorites1);
+    const favorito = screen.getByTestId('favorite-btn');
+    expect(favorito).toBeInTheDocument();
+    userEvent.click(favorito);
+    localStorage.removeItem(mockFavorites);
+    setLocalStorage(mockFavorites, listFavorites1);
+    expect(localStorage.getItem(mockFavorites)).toEqual(JSON.stringify(listFavorites1));
+
     expect(label1).toHaveClass(finisClass, { exact: true });
     fireEvent.click(step3);
     const finish = screen.getByText('Finalizar a receita');
     expect(finish).toBeVisible();
     userEvent.click(finish);
 
-    /* jest.spyOn(global, 'Date').mockImplementation(() => mockedDate); */
-    localStorage.removeItem(mockFavorites);
     expect(history.location.pathname).toEqual('/done-recipes');
-    setLocalStorage(mockFavorites, listFavorites);
-    expect(localStorage.getItem(mockFavorites)).toEqual(JSON.stringify(listFavorites));
-    console.log(localStorage.getItem(mockFavorites));
     const date = screen.queryAllByText('07/09/2022');
     expect(date[0]).toBeInTheDocument();
     global.fetch.mockClear();

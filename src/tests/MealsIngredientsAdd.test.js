@@ -26,8 +26,10 @@ describe('Meals ingredients', () => {
   const setLocalStorage = (id, data) => {
     window.localStorage.setItem(id, JSON.stringify(data));
   };
+  const Favorites = 'favoriteRecipes';
+  const Favorites1 = [];
   const mockFavorites = 'doneRecipes';
-  /* const listFavorites1 = []; */
+  const listFavorites1 = [];
   const listFavorites = [{
     alcoholicOrNot: '',
     category: 'Side',
@@ -38,11 +40,11 @@ describe('Meals ingredients', () => {
     nationality: 'Turkish',
     type: 'meal',
   }];
-  /* setLocalStorage(mockFavorites, listFavorites1); */
+  setLocalStorage(mockFavorites, listFavorites1);
   test('Ingredients', async () => {
     await flushPromises();
-    /* setLocalStorage(mockFavorites, listFavorites1);
-    expect(localStorage.getItem(mockFavorites)).toEqual(JSON.stringify(listFavorites1)); */
+    setLocalStorage(mockFavorites, listFavorites1);
+    expect(localStorage.getItem(mockFavorites)).toEqual(JSON.stringify(listFavorites1));
     const { history } = renderWithRouterAndRedux(<App />);
     history.push('meals/52977/in-progress');
     console.log('log', localStorage.getItem(mockFavorites));
@@ -114,6 +116,12 @@ describe('Meals ingredients', () => {
     fireEvent.click(step11);
     fireEvent.click(step12);
     fireEvent.click(step13);
+    const favorito = screen.getByTestId('favorite-btn');
+    expect(favorito).toBeInTheDocument();
+    userEvent.click(favorito);
+    localStorage.removeItem(Favorites);
+    setLocalStorage(Favorites, Favorites1);
+    expect(localStorage.getItem(Favorites)).toEqual(JSON.stringify(Favorites1));
     const finish = screen.getByText('Finalizar a receita');
     expect(finish).toBeVisible();
     userEvent.click(finish);
@@ -122,8 +130,6 @@ describe('Meals ingredients', () => {
     setLocalStorage(mockFavorites, listFavorites);
     expect(localStorage.getItem(mockFavorites)).toEqual(JSON.stringify(listFavorites));
     console.log(localStorage.getItem(mockFavorites));
-    const dayData = screen.queryAllByText('07/09/2022');
-    expect(dayData[0]).toBeInTheDocument();
     global.fetch.mockClear();
   });
 });
