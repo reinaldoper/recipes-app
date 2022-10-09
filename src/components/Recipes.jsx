@@ -18,7 +18,7 @@ function Recipes({ recipesDrinks, recipesMeals, buttonClick, categorySelected })
   };
 
   const listDrinks = () => {
-    console.log(categorySelected);
+    console.log('categoris', categorySelected);
     if (recipesDrinks.length === 0 && buttonClick === 'drinks') {
       global.alert('Sorry, we haven\'t found any recipes for these filters.');
     } else if (recipesDrinks && recipesDrinks.length === 1 && !categorySelected) {
@@ -41,6 +41,8 @@ function Recipes({ recipesDrinks, recipesMeals, buttonClick, categorySelected })
   };
 
   const listMeals = () => {
+    console.log('categoris, meals', categorySelected);
+    console.log('recipe', recipesMeals.length);
     if (recipesMeals.length === 0 && buttonClick === 'meals') {
       global.alert('Sorry, we haven\'t found any recipes for these filters.');
     } else if (recipesMeals && recipesMeals.length === 1 && !categorySelected) {

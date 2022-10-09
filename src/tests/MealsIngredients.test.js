@@ -121,9 +121,9 @@ describe('Meals ingredients', () => {
     expect(history.location.pathname).toEqual('/done-recipes');
     setLocalStorage(mockFavorites, listFavorites);
     expect(localStorage.getItem(mockFavorites)).toEqual(JSON.stringify(listFavorites));
-    console.log(localStorage.getItem(mockFavorites));
+    /* console.log(localStorage.getItem(mockFavorites));
     const dayData = screen.queryAllByText('07/09/2022');
-    expect(dayData[0]).toBeInTheDocument();
+    expect(dayData[0]).toBeInTheDocument(); */
     global.fetch.mockClear();
   });
 });
