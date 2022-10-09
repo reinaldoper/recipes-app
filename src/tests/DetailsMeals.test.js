@@ -2,8 +2,6 @@ import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import App from '../App';
-/* import DrinksPage from '../pages/DrinksPage'; */
-/* import MealsPage from '../pages/MealRecipe'; */
 import detailsMeals from './helpers/detailsMeals';
 import drinks from './helpers/drinks';
 import renderWithRouterAndRedux from './helpers/rendeWithRouterAndRedux';
@@ -24,7 +22,6 @@ describe('Testand details Meals', () => {
   const mockFavorites = 'favoriteRecipes';
   const listFavorites = [{
     id: '52844',
-    /* nationality: 'Turkish', */
     name: 'Lasagne',
     image: 'https://www.themealdb.com/images/media/meals/wtsvxx1511296896.jpg',
   }];

@@ -1,7 +1,7 @@
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-import App from '../App';
+/* import App from '../App'; */
 import DrinksPage from '../pages/DrinksPage';
 import MealsPage from '../pages/MealsPage';
 import beefMeals from './helpers/beefMeals';
@@ -36,7 +36,7 @@ describe('Testando componente ButtonsCategories', () => {
   const exet = 'exec-search-btn';
   test('Testado o botão Goat', async () => {
     jest.spyOn(global, 'fetch').mockImplementation(mockGoad);
-    const { history } = renderWithRouterAndRedux(<App />);
+    const { history } = renderWithRouterAndRedux(<MealsPage />);
     history.push('/meals');
     const butoSet = screen.getByTestId('set-search');
     const nameRadio = screen.getByTestId('name-search-radio');
