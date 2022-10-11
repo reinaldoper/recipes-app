@@ -65,10 +65,23 @@ describe('Testand details Drinks', () => {
     name: 'Corba',
     image: 'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg',
   }];
+  const mockRecipes = 'doneRecipes';
+  const listRecipes = [
+    {
+      alcoholicOrNot: 'Alcoholic',
+      id: '14610',
+      type: 'drink',
+      name: 'ACID',
+      category: 'Shot',
+      nationality: '',
+      image: 'https://www.thecocktaildb.com/images/media/drink/xuxpxt1479209317.jpg',
+    }];
   setLocalStorage(mockFavorites, listFavorites);
+  setLocalStorage(mockRecipes, listRecipes);
   test('Drinks details', async () => {
     await flushPromises();
     expect(localStorage.getItem(mockFavorites)).toEqual(JSON.stringify(listFavorites));
+    expect(localStorage.getItem(mockRecipes)).toEqual(JSON.stringify(listRecipes));
     const { history } = renderWithRouterAndRedux(<App />);
     history.push('/drinks/14610');
 
@@ -88,9 +101,14 @@ describe('Testand details Drinks', () => {
     window.document.execCommand = jest.fn().mockImplementation(() => ' ');
     userEvent.click(share);
     const linkCopied = screen.getByText('Link copied!');
-    expect(linkCopied).toBeInTheDocument();
+    expect(linkCopied)./* not. */toBeInTheDocument();
     userEvent.click(btnFavorite);
+    /* const butonStart = screen.getByTestId('start-recipe-btn'); */
+    /* expect(butonStart).not.toBeInTheDocument(); */
     localStorage.removeItem(mockFavorites);
+    setLocalStorage(mockRecipes, listRecipes);
+    expect(localStorage.getItem(mockRecipes)).toEqual(JSON.stringify(listRecipes));
+    expect(screen.queryByText('Start Recipe')).not.toBeInTheDocument();
     setLocalStorage(mockFavorites, listFavorites1);
     expect(localStorage.getItem(mockFavorites)).toEqual(JSON.stringify(listFavorites1));
 
