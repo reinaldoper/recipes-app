@@ -5,7 +5,7 @@ import RevenueOfDrinks from '../components/RevenueOfDrinks';
 import RevenueOfMeals from '../components/RevenueOfMeals';
 import { requestDrinkDetail, requestMealDetail } from '../services/recipesDetailsAPI';
 
-function RecipesInProgress() {
+function RecipeInProgress() {
   const history = useHistory();
   const [revenues, setRevenues] = useState([]);
   const infoData = history.location.pathname.split('/');
@@ -40,4 +40,4 @@ const mapStateToProps = (state) => ({
   categorie: state.reducerFetch.pageSelected,
 });
 
-export default connect(mapStateToProps)(RecipesInProgress);
+export default connect(mapStateToProps)(RecipeInProgress);

@@ -8,7 +8,7 @@ import RecipeListDetails from './RecipeListDetails';
 import { getDoneRecipesLocalStorage, getInprogressRecipesLocalStorage }
   from '../localStorageFunctions/functionsGetLocalStorage';
 
-function RecipesDetails({ recipe, sixDrinks, sixMeals, setPageSelect }) {
+function RecipeDetails({ recipe, sixDrinks, sixMeals, setPageSelect }) {
   const history = useHistory();
   const [dataRecipes, setDataRecipes] = useState({
     type: '',
@@ -231,8 +231,8 @@ const mapDispatchToProps = (dispatch) => ({
   setPageSelect: (page) => dispatch(typePageSelect(page)),
 });
 
-RecipesDetails.propTypes = {
+RecipeDetails.propTypes = {
   recipe: object,
 }.isrequired;
 
-export default connect(null, mapDispatchToProps)(RecipesDetails);
+export default connect(null, mapDispatchToProps)(RecipeDetails);

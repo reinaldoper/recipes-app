@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { object } from 'prop-types';
-import RecipesDetails from '../components/RecipesDetails';
+import RecipeDetails from '../components/RecipeDetails';
 import { requestDrinkDetail } from '../services/recipesDetailsAPI';
 import { recipesMealsAPI } from '../services/RecipesAPI';
 
@@ -25,7 +25,7 @@ function DrinkRecipe({ history }) {
 
   return (
     <div>
-      <RecipesDetails sixMeals={ meals } recipe={ recipe } />
+      <RecipeDetails sixMeals={ meals } recipe={ recipe } />
     </div>
   );
 }
