@@ -15,6 +15,7 @@ import RecipeInProgress from './pages/RecipeInProgress';
 function App() {
   return (
     <div className="meals">
+
       <Switch>
         <Route exact path="/" component={ Login } />
         <Route exact path="/meals" component={ MealsPage } />
@@ -26,6 +27,7 @@ function App() {
         <Route exact path="/drinks/:id" component={ DrinkRecipe } />
         <Route exact path="/:type/:id/in-progress" component={ RecipeInProgress } />
       </Switch>
+
     </div>
   );
 }
